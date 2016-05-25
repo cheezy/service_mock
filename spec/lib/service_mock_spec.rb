@@ -4,5 +4,4 @@ describe ServiceMock do
 
 
 
-
 end
