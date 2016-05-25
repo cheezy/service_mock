@@ -96,4 +96,18 @@ describe ServiceMock::Server do
       mock.save
     end
   end
+
+  describe "resetting the stubs" do
+    it 'resets only the stubs' do
+      expect(http).to receive(:post).with("/__admin/mappings/reset", "")
+      mock.reset_mappings
+    end
+  end
+
+  describe "resetting the entire server removing all mappings" do
+    it 'resets everything' do
+      expect(http).to receive(:post).with("/__admin/reset", "")
+      mock.reset_all
+    end
+  end
 end

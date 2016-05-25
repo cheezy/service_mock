@@ -34,7 +34,18 @@ module ServiceMock
       http.post("/__admin/mappings/save", "")
     end
 
+    def reset_mappings
+      yield self if block_given?
+      http.post("/__admin/mappings/reset", "")
+    end
+
+    def reset_all
+      yield self if block_given?
+      http.post("/__admin/reset", "")
+    end
+
     private
+
 
     def start_process
       process = ChildProcess.build(*(start_command + command_line_options))
