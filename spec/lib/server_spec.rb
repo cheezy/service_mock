@@ -10,7 +10,7 @@ describe ServiceMock::Server do
   end
 
 
-  describe "initialization" do
+  describe 'initialization' do
     it 'requires the version of wiremock to use' do
       mock = ServiceMock::Server.new('123')
       expect(mock.wiremock_version).to eql '123'
@@ -21,7 +21,7 @@ describe ServiceMock::Server do
       expect(mock.working_directory).to eql '/working/directory'
     end
 
-    it "defaults the working directory to 'config/mocks'" do
+    it 'defaults the working directory to "config/mocks"' do
       mock = ServiceMock::Server.new('123')
       expect(mock.working_directory).to eql 'config/mocks'
     end
@@ -29,7 +29,7 @@ describe ServiceMock::Server do
 
   require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-  describe "starting the server" do
+  describe 'starting the server' do
     let(:child) {double('child').as_null_object}
 
     before do
@@ -70,10 +70,10 @@ describe ServiceMock::Server do
     end
   end
 
-  describe "stopping the server" do
+  describe 'stopping the server' do
     it 'shuts down the server process' do
       expect(Net::HTTP).to receive(:new).with('localhost', '8080').and_return http
-      expect(http).to receive(:post).with("/__admin/shutdown", "")
+      expect(http).to receive(:post).with('/__admin/shutdown', '')
       mock.stop
     end
 
@@ -83,30 +83,30 @@ describe ServiceMock::Server do
     end
   end
 
-  describe "creating a stub message" do
+  describe 'creating a stub message' do
     it 'creates a stub message' do
-      expect(http).to receive(:post).with("/__admin/mappings/new", "{the message}")
-      mock.stub("{the message}")
+      expect(http).to receive(:post).with('/__admin/mappings/new', '{the message}')
+      mock.stub('{the message}')
     end
   end
 
-  describe "saving the stubbed messages" do
+  describe 'saving the stubbed messages' do
     it 'saves the messages' do
-      expect(http).to receive(:post).with("/__admin/mappings/save", "")
+      expect(http).to receive(:post).with('/__admin/mappings/save', '')
       mock.save
     end
   end
 
-  describe "resetting the stubs" do
+  describe 'resetting the stubs' do
     it 'resets only the stubs' do
-      expect(http).to receive(:post).with("/__admin/mappings/reset", "")
+      expect(http).to receive(:post).with('/__admin/mappings/reset', '')
       mock.reset_mappings
     end
   end
 
-  describe "resetting the entire server removing all mappings" do
+  describe 'resetting the entire server removing all mappings' do
     it 'resets everything' do
-      expect(http).to receive(:post).with("/__admin/reset", "")
+      expect(http).to receive(:post).with('/__admin/reset', '')
       mock.reset_all
     end
   end

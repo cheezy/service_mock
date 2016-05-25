@@ -21,27 +21,27 @@ module ServiceMock
 
     def stop
       yield self if block_given?
-      http.post("/__admin/shutdown", "")
+      http.post('/__admin/shutdown', '')
     end
 
     def stub(message)
       yield self if block_given?
-      http.post("/__admin/mappings/new", message)
+      http.post('/__admin/mappings/new', message)
     end
 
     def save
       yield self if block_given?
-      http.post("/__admin/mappings/save", "")
+      http.post('/__admin/mappings/save', '')
     end
 
     def reset_mappings
       yield self if block_given?
-      http.post("/__admin/mappings/reset", "")
+      http.post('/__admin/mappings/reset', '')
     end
 
     def reset_all
       yield self if block_given?
-      http.post("/__admin/reset", "")
+      http.post('/__admin/reset', '')
     end
 
     private
@@ -60,7 +60,7 @@ module ServiceMock
     end
 
     def http
-      Net::HTTP.new("localhost", "#{port ? port.to_s : "8080"}")
+      Net::HTTP.new('localhost', "#{port ? port.to_s : '8080'}")
     end
 
   end
