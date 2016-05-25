@@ -27,7 +27,7 @@ module ServiceMock
     private
 
     def start_process
-      process = ChildProcess.build(*start_command)
+      process = ChildProcess.build(*(start_command + command_line_options))
       process.cwd = working_directory
       process.io.inherit! if inherit_io
       process.start

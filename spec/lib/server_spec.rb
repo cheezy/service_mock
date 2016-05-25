@@ -57,6 +57,11 @@ describe ServiceMock::Server do
       expect(child).not_to receive(:wait)
       mock.start
     end
+
+    it 'supplies command-line options' do
+      expect(ChildProcess).to receive(:build).with('java', '-jar', 'wiremock-123.jar', '--port', '123').and_return(child)
+      mock.start {|server| server.port = 123}
+    end
   end
 
   describe "stopping the server" do
