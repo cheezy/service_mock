@@ -3,6 +3,12 @@ require 'spec_helper'
 describe ServiceMock::Server do
 
   let(:mock) {ServiceMock::Server.new('123')}
+  let(:http)  {double('http').as_null_object}
+
+  before do
+    allow(Net::HTTP).to receive(:new).with('localhost', '8080').and_return http
+  end
+
 
   describe "initialization" do
     it 'requires the version of wiremock to use' do
@@ -65,8 +71,6 @@ describe ServiceMock::Server do
   end
 
   describe "stopping the server" do
-    let(:http)  {double('http').as_null_object}
-
     it 'shuts down the server process' do
       expect(Net::HTTP).to receive(:new).with('localhost', '8080').and_return http
       expect(http).to receive(:post).with("/__admin/shutdown", "")
@@ -76,6 +80,20 @@ describe ServiceMock::Server do
     it 'allows you to override the default port by setting value in block' do
       expect(Net::HTTP).to receive(:new).with('localhost', '1234').and_return http
       mock.stop {|server| server.port = 1234}
+    end
+  end
+
+  describe "creating a stub message" do
+    it 'creates a stub message' do
+      expect(http).to receive(:post).with("/__admin/mappings/new", "{the message}")
+      mock.stub("{the message}")
+    end
+  end
+
+  describe "saving the stubbed messages" do
+    it 'saves the messages' do
+      expect(http).to receive(:post).with("/__admin/mappings/save", "")
+      mock.save
     end
   end
 end

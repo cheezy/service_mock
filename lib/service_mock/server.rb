@@ -24,6 +24,16 @@ module ServiceMock
       http.post("/__admin/shutdown", "")
     end
 
+    def stub(message)
+      yield self if block_given?
+      http.post("/__admin/mappings/new", message)
+    end
+
+    def save
+      yield self if block_given?
+      http.post("/__admin/mappings/save", "")
+    end
+
     private
 
     def start_process
