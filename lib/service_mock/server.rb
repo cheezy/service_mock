@@ -1,6 +1,5 @@
 require 'childprocess'
 require 'net/http'
-require_relative 'command_line_options'
 
 module ServiceMock
   class Server
@@ -12,6 +11,8 @@ module ServiceMock
     def initialize(wiremock_version, working_directory='config/mocks')
       @wiremock_version = wiremock_version
       @working_directory = working_directory
+      self.inherit_io = false
+      self.wait_for_process = false
     end
 
     def start
