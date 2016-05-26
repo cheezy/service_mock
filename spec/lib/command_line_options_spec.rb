@@ -31,6 +31,6 @@ describe ServiceMock::CommandLineOptions do
 
   it 'provides a proxy_all option' do
     clo.proxy_all = 'http://proxy.ca'
-    expect(clo.proxy_all_command).to eql ['--proxy-all="http://proxy.ca"']
+    expect(clo.proxy_all_command).to eql ['--proxy-all=http://proxy.ca']
   end
 end
