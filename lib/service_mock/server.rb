@@ -6,7 +6,7 @@ module ServiceMock
     include CommandLineOptions
 
     attr_accessor :inherit_io, :wait_for_process
-    attr_reader :wiremock_version, :working_directory
+    attr_reader :wiremock_version, :working_directory, :process
 
     def initialize(wiremock_version, working_directory='config/mocks')
       @wiremock_version = wiremock_version
@@ -49,11 +49,11 @@ module ServiceMock
 
 
     def start_process
-      process = ChildProcess.build(*(start_command + command_line_options))
-      process.cwd = working_directory
-      process.io.inherit! if inherit_io
-      process.start
-      process.wait if wait_for_process
+      @process = ChildProcess.build(*(start_command + command_line_options))
+      @process.cwd = working_directory
+      @process.io.inherit! if inherit_io
+      @process.start
+      @process.wait if wait_for_process
     end
 
     def start_command
