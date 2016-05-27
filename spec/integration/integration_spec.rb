@@ -51,7 +51,7 @@ describe 'Integration test' do
   it 'uses a file and stubs a message' do
     mock.start
     sleep 2
-    filename = File.expand_path('config/mocks/mappings/sample.json')
+    filename = File.expand_path('spec/data/sample.json')
     mock.stub_with_file(filename)
     sleep 1
     uri = URI('http://localhost:8080/get/sample')
