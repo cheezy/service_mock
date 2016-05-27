@@ -47,6 +47,19 @@ describe 'Integration test' do
 
     mock.stop
   end
+
+  it 'uses a file and stubs a message' do
+    mock.start
+    sleep 2
+    filename = File.expand_path('config/mocks/mappings/sample.json')
+    mock.stub_with_file(filename)
+    sleep 1
+    uri = URI('http://localhost:8080/get/sample')
+    result =  Net::HTTP.get(uri)
+    expect(result).to eql "This is the sample\n"
+
+    mock.stop
+  end
 end
 
 # mock.start do |server|
