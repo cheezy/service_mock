@@ -9,14 +9,14 @@ describe 'Integration test' do
 
   it 'starts the server' do
     mock.start
-    sleep 2
+    sleep 1
     expect(mock.process.alive?).to be true
     mock.stop
   end
 
   it 'stops the server' do
     mock.start
-    sleep 2
+    sleep 1
     mock.stop
     sleep 1
     expect(mock.process.exited?).to be true
@@ -24,7 +24,7 @@ describe 'Integration test' do
 
   it 'stubs a message' do
     mock.start
-    sleep 2
+    sleep 1
     message =
     '
     { "request":
@@ -50,7 +50,7 @@ describe 'Integration test' do
 
   it 'uses a file and stubs a message' do
     mock.start
-    sleep 2
+    sleep 1
     filename = File.expand_path('spec/data/sample.json')
     mock.stub_with_file(filename)
     sleep 1
