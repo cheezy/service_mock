@@ -68,28 +68,5 @@ end
 #   server.proxy_all = 'https://client-test2.schwab.com'
 #   server.verbose = true
 #   server.inherit_io = true
-#   # server.wait_for_process = true
+#   server.wait_for
 # end
-
-# sleep 5
-#
-# message =
-# '
-# { "request":
-#   {
-#     "url": "/get/that",
-#     "method": "GET"
-#   },
-#   "response":
-#   {
-#     "status": 200,
-#     "body": "There it is\n"
-#   }
-# }
-# '
-#
-# mock.stub(message)
-
-# mock.save
-
-# mock.stop
