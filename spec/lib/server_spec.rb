@@ -88,6 +88,14 @@ describe ServiceMock::Server do
       expect(http).to receive(:post).with('/__admin/mappings/new', '{the message}')
       mock.stub('{the message}')
     end
+
+    it 'allows a stub to be created on a remote machine' do
+      expect(Net::HTTP).to receive(:new).with('remote_host', '8080').and_return http
+      expect(http).to receive(:post).with('/__admin/mappings/new', '{the message}')
+      mock.stub('{the message}') do |server|
+        server.remote_host = 'remote_host'
+      end
+    end
   end
 
   describe 'saving the stubbed messages' do

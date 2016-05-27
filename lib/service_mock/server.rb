@@ -5,7 +5,7 @@ module ServiceMock
   class Server
     include CommandLineOptions
 
-    attr_accessor :inherit_io, :wait_for_process
+    attr_accessor :inherit_io, :wait_for_process, :remote_host
     attr_reader :wiremock_version, :working_directory, :process
 
     def initialize(wiremock_version, working_directory='config/mocks')
@@ -61,8 +61,17 @@ module ServiceMock
     end
 
     def http
-      Net::HTTP.new('localhost', "#{port ? port.to_s : '8080'}")
+      Net::HTTP.new(admin_host, admin_port)
     end
+
+    def admin_host
+      "#{remote_host ? remote_host : 'localhost'}"
+    end
+
+    def admin_port
+      "#{port ? port.to_s : '8080'}"
+    end
+
 
   end
 end
