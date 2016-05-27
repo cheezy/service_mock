@@ -98,6 +98,25 @@ describe ServiceMock::Server do
     end
   end
 
+  describe 'creating a stub message from a file' do
+    it 'reads the file and creates the stub' do
+      file = double
+      expect(File).to receive(:open).with('/path/to/file', 'rb').and_yield(file)
+      expect(file).to receive(:read).and_return('file contents')
+      allow(http).to receive(:post).with('/__admin/mappings/new', 'file contents')
+      mock.stub_with_file('/path/to/file')
+    end
+
+    it 'allows parameters to be provided when setting up the call' do
+      expect(Net::HTTP).to receive(:new).with('remote_host', '8080').and_return http
+      allow(File).to receive(:open).with('/path/to/file', 'rb').and_return('file contents')
+      allow(http).to receive(:post).with('/__admin/mappings/new', 'file contents')
+      mock.stub_with_file('/path/to/file') do |server|
+        server.remote_host = 'remote_host'
+      end
+    end
+  end
+
   describe 'saving the stubbed messages' do
     it 'saves the messages' do
       expect(http).to receive(:post).with('/__admin/mappings/save', '')

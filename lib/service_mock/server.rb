@@ -30,6 +30,12 @@ module ServiceMock
       http.post('/__admin/mappings/new', message)
     end
 
+    def stub_with_file(filename)
+      yield self if block_given?
+      content = File.open(filename, 'rb') {|file| file.read}
+      stub(content)
+    end
+
     def save
       yield self if block_given?
       http.post('/__admin/mappings/save', '')
