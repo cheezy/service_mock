@@ -13,6 +13,7 @@ module ServiceMock
           server.stop
         end
       end
+
     end
   end
 end
