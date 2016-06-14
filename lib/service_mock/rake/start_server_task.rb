@@ -13,12 +13,9 @@ module ServiceMock
         @name = name
         @wiremock_version = wiremock_version
         @working_directory = working_directory
+        @server ||= ::ServiceMock::Server.new(wiremock_version, working_directory)
         yield server if block_given?
         define_task
-      end
-
-      def server
-        @server ||= ::ServiceMock::Server.new(wiremock_version, working_directory)
       end
 
       private
@@ -26,7 +23,7 @@ module ServiceMock
       def define_task
         desc 'Start the WireMock Process'
         task name do
-
+          server.start
         end
       end
 

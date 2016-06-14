@@ -29,4 +29,13 @@ describe ServiceMock::Rake::StartServerTask do
     expect(rake_task.server.verbose).to be true
     expect(rake_task.server.port).to eql 8080
   end
+
+  it 'starts the server' do
+    expect(::ServiceMock::Server).to receive(:new).and_return server
+    expect(server).to receive(:start)
+    raketask.new(:the_mock, '123') do |task|
+      task.port = 8080
+    end
+    ::Rake::Task[:the_mock].execute
+  end
 end
