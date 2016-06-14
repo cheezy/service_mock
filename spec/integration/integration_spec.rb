@@ -60,6 +60,20 @@ describe 'Integration test' do
 
     mock.stop
   end
+
+  it 'uses an erb file and has to form a message' do
+    mock.start
+    sleep 1
+    filename = File.expand_path('spec/data/sample.erb')
+    mock.stub_with_erb(filename, first: 'Sam', last: 'Smith')
+    sleep 1
+    uri = URI('http://localhost:8080/get/erb')
+    result =  Net::HTTP.get(uri)
+    expect(result).to eql '<h1>Hello Sam Smith</h1>'
+
+    mock.stop
+
+  end
 end
 
 # mock.start do |server|

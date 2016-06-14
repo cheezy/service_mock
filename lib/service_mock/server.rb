@@ -1,5 +1,7 @@
 require 'childprocess'
 require 'net/http'
+require 'erb'
+require 'ostruct'
 
 module ServiceMock
   class Server
@@ -34,6 +36,13 @@ module ServiceMock
       yield self if block_given?
       content = File.open(filename, 'rb') {|file| file.read}
       stub(content)
+    end
+
+    def stub_with_erb(filename, hsh)
+      yield self if block_given?
+      template = File.open(filename, 'rb') {|file| file.read}
+      erb_content = ERB.new(template).result(OpenStruct.new(hsh).instance_eval {binding})
+      stub(erb_content)
     end
 
     def save

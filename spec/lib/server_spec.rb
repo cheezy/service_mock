@@ -117,6 +117,25 @@ describe ServiceMock::Server do
     end
   end
 
+  describe 'creating a stub message from an erb file and a hash of data' do
+    it 'reads the file and uses the hash to create the stub' do
+      file = double
+      expect(File).to receive(:open).with('/path/to/file.erb', 'rb').and_yield(file)
+      expect(file).to receive(:read).and_return('Name: <%= first %> <%= last %>')
+      allow(http).to receive(:post).with('/__admin/mappings/new', 'Name: Sam Smith')
+      mock.stub_with_erb('/path/to/file.erb', {first: 'Sam', last: 'Smith'})
+    end
+
+    it 'allows parameters to be provided when setting up the call' do
+      expect(Net::HTTP).to receive(:new).with('remote_host', '8080').and_return http
+      allow(File).to receive(:open).with('/path/to/file.erb', 'rb').and_return('Name: <%= first %> <%= last %>')
+      allow(http).to receive(:post).with('/__admin/mappings/new', 'Name: Sam Smith')
+      mock.stub_with_erb('/path/to/file.erb', {first: 'Sam', last: 'Smith'}) do |server|
+        server.remote_host = 'remote_host'
+      end
+    end
+  end
+
   describe 'saving the stubbed messages' do
     it 'saves the messages' do
       expect(http).to receive(:post).with('/__admin/mappings/save', '')
