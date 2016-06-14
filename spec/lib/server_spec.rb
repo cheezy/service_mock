@@ -1,8 +1,8 @@
 require 'spec_helper'
 
-describe ServiceMock::Server do
+describe ::ServiceMock::Server do
 
-  let(:mock) {ServiceMock::Server.new('123')}
+  let(:mock) {::ServiceMock::Server.new('123')}
   let(:http)  {double('http').as_null_object}
 
   before do
@@ -12,17 +12,17 @@ describe ServiceMock::Server do
 
   describe 'initialization' do
     it 'requires the version of wiremock to use' do
-      mock = ServiceMock::Server.new('123')
+      mock = ::ServiceMock::Server.new('123')
       expect(mock.wiremock_version).to eql '123'
     end
 
     it 'requires the wiremock working directory' do
-      mock = ServiceMock::Server.new('123', '/working/directory')
+      mock = ::ServiceMock::Server.new('123', '/working/directory')
       expect(mock.working_directory).to eql '/working/directory'
     end
 
     it 'defaults the working directory to "config/mocks"' do
-      mock = ServiceMock::Server.new('123')
+      mock = ::ServiceMock::Server.new('123')
       expect(mock.working_directory).to eql 'config/mocks'
     end
   end
