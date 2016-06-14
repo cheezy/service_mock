@@ -87,6 +87,5 @@ module ServiceMock
       "#{port ? port.to_s : '8080'}"
     end
 
-
   end
 end
