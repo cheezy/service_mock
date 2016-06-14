@@ -2,6 +2,11 @@ module ServiceMock
   module CommandLineOptions
 
     OPTIONS = [:port, :https_port, :verbose, :root_dir, :record_mappings, :proxy_all]
+    NOT_IMPLEMENTED = [:https_keystore, :keystore_password, :truststore_password,
+                       :https_require_client_cert, :preserve_host_header, :proxy_via,
+                       :enable_browser_proxying, :no_request_journal, :container_threads,
+                       :match_headers, :max_request_journal_entries, :jetty_acceptor_threads,
+                       :jetty_accept_queue_size,:jetty_header_buffer_size, :extensions, :help]
 
     attr_accessor *OPTIONS
 
