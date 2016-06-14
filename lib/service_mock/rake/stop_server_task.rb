@@ -4,14 +4,14 @@ require 'service_mock/server'
 
 module ServiceMock
   module Rake
-    class StartServerTask < ::Rake::TaskLib
+    class StopServerTask < ::Rake::TaskLib
       include ::Rake::DSL if defined?(::Rake::DSL)
 
       attr_reader :name, :server
 
       def initialize(name, wiremock_version, working_directory='config/mocks')
         @name = name
-        @server ||= ::ServiceMock::Server.new(wiremock_version, working_directory)
+        @server = ::ServiceMock::Server.new(wiremock_version, working_directory)
         yield server if block_given?
         define_task
       end
@@ -19,12 +19,11 @@ module ServiceMock
       private
 
       def define_task
-        desc 'Start the WireMock Process'
+        desc 'Stop the WireMock Process'
         task name do
-          server.start
+          server.stop
         end
       end
-
     end
   end
 end

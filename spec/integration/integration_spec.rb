@@ -3,8 +3,8 @@ require 'net/http'
 
 describe 'Integration test' do
 
-  #let(:mock) {ServiceMock::Server.new('1.57-standalone')}
-  let(:mock) {ServiceMock::Server.new('standalone-2.0.10-beta')}
+  #let(:mock) {::ServiceMock::Server.new('1.57-standalone')}
+  let(:mock) {::ServiceMock::Server.new('standalone-2.0.10-beta')}
 
   it 'starts the server' do
     mock.start
