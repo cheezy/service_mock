@@ -33,7 +33,6 @@ module ServiceMock
     end
 
     def proxy_all_command
-      puts proxy_all
       ["--proxy-all=#{proxy_all.to_s}"]
     end
   end
