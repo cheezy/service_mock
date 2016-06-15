@@ -2,6 +2,7 @@ require 'childprocess'
 require 'net/http'
 require 'erb'
 require 'ostruct'
+require 'service_mock/render_subtemplate'
 
 module ServiceMock
   class Server
@@ -41,7 +42,7 @@ module ServiceMock
     def stub_with_erb(filename, hsh)
       yield self if block_given?
       template = File.open(filename, 'rb') {|file| file.read}
-      erb_content = ERB.new(template).result(OpenStruct.new(hsh).instance_eval {binding})
+      erb_content = ERB.new(template).result(data_binding(hsh))
       stub(erb_content)
     end
 
@@ -62,6 +63,12 @@ module ServiceMock
 
     private
 
+
+    def data_binding(hsh)
+      data_binding = OpenStruct.new(hsh).instance_eval { binding }
+      data_binding.extend ::ServiceMock::RenderSubTemplate
+      data_binding
+    end
 
     def start_process
       @process = ChildProcess.build(*(start_command + command_line_options))
