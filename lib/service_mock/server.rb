@@ -66,8 +66,7 @@ module ServiceMock
 
     def data_binding(hsh)
       OpenStruct.include ::ServiceMock::RenderSubTemplate
-      data_binding = OpenStruct.new(hsh).instance_eval { binding }
-      data_binding
+      OpenStruct.new(hsh).instance_eval { binding }
     end
 
     def start_process
