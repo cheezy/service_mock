@@ -71,7 +71,19 @@ describe 'Integration test' do
     expect(result).to eql '<h1>Hello Sam Smith</h1>'
 
     mock.stop
+  end
 
+  it 'embeds a subtemplate into an erb using render' do
+    mock.start
+    sleep 1
+    filename = File.expand_path('spec/data/outer.erb')
+    mock.stub_with_erb(filename, first: 'Sam', last: 'Smith')
+    sleep 1
+    uri = URI('http://localhost:8080/get/erb')
+    result =  Net::HTTP.get(uri)
+    expect(result).to eql '<h1>Hello Sam Smith</h1>'
+
+    mock.stop
   end
 end
 
