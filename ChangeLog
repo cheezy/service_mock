@@ -1,0 +1,5 @@
+=== Release 0.2 / 2016-06-16
+* Reorganized the imports to make it easier to utilize the rake tasks
+
+=== Release 0.1 / 2016-06-15
+* Initial release with basic functionality
