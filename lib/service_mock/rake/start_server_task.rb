@@ -1,7 +1,6 @@
 require 'rake'
 require 'rake/tasklib'
-require 'service_mock/server'
-require 'service_mock/rake/base_task'
+require 'service_mock'
 
 module ServiceMock
   module Rake
