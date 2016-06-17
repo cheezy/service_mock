@@ -15,7 +15,48 @@ will run - there is no ability for remote start and stop.
 
 ## Usage
 
+### Using the API
 
+All interaction with the WireMock services is via calls to an instance of
+`ServiceMock::Server`.  On your local machine you can `start` and `stop` an
+instance of the server process.  On local and remove machines you can also
+use one of several methods to create stubs (specify request/response data)
+as well as tell the server to `save` in-memory stubs, `reset_mappings` to
+remove all of the stubs you have provided and `reset_all` which completely
+clears all mappings and files that you have setup for WireMock to return
+as your system under test interacts with it.
+
+When you create your instance of `ServiceMock::Server` you need to provide
+some information.  The required piece of data is the version of WireMock
+you will be using.  If the name of the WireMock jar file you will be using
+is `wiremock-standalone-2.0.10-beta.jar` then the version you should provide
+is `standalone-2.0.10-beta`.  In other words, take off the initial `wiremock-`
+and the trailing `.jar` and this is your version.  The other optional value
+you can provide is the working directory - the location from where the WireMock
+server process can be started from.  By default the working directory is
+set to `config/mocks`.  You will initialize the server like this:
+
+```ruby
+# uses default working directory
+my_server = ServiceMock::Server.new('standalone-2.0.10-beta')
+ 
+# or this sets the working directory
+my_server = ServiceMock::Server.new('standalone-2.0.10-beta', '/path/to/dir')
+```
+
+There are two additional values (inherit_io and wait_for_process) that 
+are defaulted to `false`.  If set to `true`, `inherit_io` will cause our
+instance to 'inherit' the standard out and in for the running WireMock
+process.  When `wait_for_process` is set to `true` it will cause the
+call to `start` to block until the underlying WireMock process exits.
+These values can be overwritten in the call to `start` as described below.
+
+#### Starting the Server
+
+If you are starting an instance of WireMock with this gem there are a number
+of options you can provide.  You do this via a block when you call start.
+
+### Using the Rake Tasks
 
 
 ## Installation
