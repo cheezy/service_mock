@@ -2,7 +2,9 @@
 
 ServiceMock is a Ruby gem that provides a wrapper over the [WireMock](http://wiremock.org)
 library.  The gem provides the ability to perform many actions on a WireMock instance
-including starting, stopping, and several ways to stub out calls.
+including starting, stopping, and several ways to stub out calls.  It is highly
+recommended that you take the time to read the WireMock documentation and understand
+the how the library works.
 
 This gem can be used to help you virtualize services for your tests.  For example, if you
 are unable to achieve effective test data management with the backend systems you can
@@ -32,16 +34,16 @@ you will be using.  If the name of the WireMock jar file you will be using
 is `wiremock-standalone-2.0.10-beta.jar` then the version you should provide
 is `standalone-2.0.10-beta`.  In other words, take off the initial `wiremock-`
 and the trailing `.jar` and this is your version.  The other optional value
-you can provide is the working directory - the location from where the WireMock
-server process can be started from.  By default the working directory is
-set to `config/mocks`.  You will initialize the server like this:
+you can provide is the working directory - the location where the WireMock
+jar is located.  By default the working directory is set to `config/mocks`.
+You will initialize the server like this:
 
 ```ruby
 # uses default working directory
 my_server = ServiceMock::Server.new('standalone-2.0.10-beta')
  
 # or this sets the working directory
-my_server = ServiceMock::Server.new('standalone-2.0.10-beta', '/path/to/dir')
+my_server = ServiceMock::Server.new('standalone-2.0.10-beta', '/path/to/jar')
 ```
 
 There are two additional values (inherit_io and wait_for_process) that 
@@ -53,8 +55,45 @@ These values can be overwritten in the call to `start` as described below.
 
 #### Starting the Server
 
-If you are starting an instance of WireMock with this gem there are a number
-of options you can provide.  You do this via a block when you call start.
+You start the server by calling the `start` method but it doesn't end there.
+There are a large number of parameters you can set to control the way that
+WireMock runs.  These are set via a block that is passed to the `start` method.
+
+```ruby
+my_server.start do |server|
+  server.port = 8080
+  server.record_mappings = true
+  server.root_dir = /path/to/root
+  server.verbose = true
+end
+```
+
+The entire set of values that can be set are:
+
+| value  | description  |
+|--------|--------------|
+| port  | The port to listen on for http request |
+| https_port | The port to listen on for https request |
+| https_keystore | Path to the keystore file containing an SSL certificate to use with https |
+| keystore_password | Password to the keystore if something other than "password" |
+| https_truststore | Path to a keystore file containing client certificates |
+| truststore_password | Optional password to the trust store.  Defaults to "password" if not specified |
+| https_reuire_client_cert | Force clients to authenticate with a client certificate |
+| verbose | print verbose output from the running process. Values are `true` or `false` |
+| root_dir | Sets the root directory under which `mappings` and `__files` reside.  This defaults to the current directory |
+| record_mappings | Record incoming requests as stub mappings |
+| match_headers | When in record mode, capture request headers with the keys specified |
+| proxy_all | proxy all requests through to another URL. Typically used in conjunction with `record_mappings` such that a session on another service can be recorded |
+| preserve_host_header | When in proxy mode, it passes the Host header as it comes from the client through to the proxied service |
+| proxy_via | When proxying requests, route via another proxy server. Useful when inside a corporate network that only permits internet access via an opaque proxy |
+| enable_browser_proxy | Run as a browser proxy |
+| no_request_journal | Disable the request journal, which records incoming requests for later verification |
+| max_request_journal_entries | Sets maximum number of entries in request journal.  When this limit is reached oldest entries will be discarded |
+
+In addition, as mentioned before, you can set the `inherit_io` and `wait_for_process` options
+to `true` inside of the block.
+
+
 
 ### Using the Rake Tasks
 
