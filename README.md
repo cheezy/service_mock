@@ -68,7 +68,7 @@ my_server.start do |server|
 end
 ```
 
-The entire set of values that can be set are:
+The values that can be set are:
 
 | value  | description  |
 |--------|--------------|
@@ -93,7 +93,41 @@ The entire set of values that can be set are:
 In addition, as mentioned before, you can set the `inherit_io` and `wait_for_process` options
 to `true` inside of the block.
 
+### Stubbing service calls
 
+Please read the [WireMock stubbing](http://wiremock.org/stubbing.html) 
+documentation so you understand the message structures that are used.
+It is very important that you understand this first. Those details will
+not be covered here.
+
+There are three methods that can be used to stub services.  
+
+```ruby
+my_server.stub(string_containing_json_stub)
+
+my_server.stub_with_file(file_containing_json_stub)
+
+my_server.stub_with_erb(erbfile_containing_json_stub, hash_with_values)
+```
+
+The first method is pretty self-explanatory.  You simply pass a string
+that contains the json stub and the server contacts the running server
+process and sets it up.  The second method takes a full path to a file 
+that contains the json stub.
+
+The third method is where things get interesting.  It allows you to provide
+an [ERB](https://docs.puppet.com/puppet/latest/reference/lang_template_erb.html)
+file that will become your json stub.  ERB stands for Embedded Ruby and
+allows you to insert Ruby code inside any type of file - including json.
+Using this ability to allows us to build templates of the service messages.
+It is quite common to mock a service many times and while the structure
+is the same with each mock the data supplied and returned is different.
+Using templates allows us to simply write the template once and then 
+supply the data for each mock.
+
+The third method takes the full path to an erb file that contains the
+json stub and a `Hash` that has `key=>value` combinations that will
+fill in the data elements in the template.
 
 ### Using the Rake Tasks
 
