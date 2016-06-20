@@ -61,7 +61,7 @@ WireMock runs.  These are set via a block that is passed to the `start` method.
 
 ```ruby
 my_server.start do |server|
-  server.port = 8080
+  server.port = 8081
   server.record_mappings = true
   server.root_dir = /path/to/root
   server.verbose = true
