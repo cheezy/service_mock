@@ -126,7 +126,7 @@ Using templates allows us to simply write the template once and then
 supply the data for each mock.
 
 The third method takes the full path to an erb file that contains the
-json stub and a `Hash` that has `key=>value` combinations that will
+json stub and a `Hash` that contains `key=>value` combinations that will
 fill in the data elements in the template.
 
 ### Using the Rake Tasks
