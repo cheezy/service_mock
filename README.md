@@ -129,7 +129,48 @@ The third method takes the full path to an erb file that contains the
 json stub and a `Hash` that contains `key=>value` combinations that will
 fill in the data elements in the template.
 
+If you set the port value when you started the server you will need to 
+do the same via a block when stubbing.  
+
+```ruby
+my_server.stub(string_containing_json_stub) do |server|
+  server.port = 8081
+end
+```
+
+### Other capabilities
+
+There are additional methods that provide access to the running WireMock
+server. They are:
+
+```ruby
+my_server.stop
+```
+
+Stops the running WireMock server if it is running locally.
+ 
+```ruby
+my_server.save
+```
+ 
+Writes all of the stubs to disk so they are available the next time
+the server starts.
+
+```ruby
+my_server.reset_mappings
+```
+
+Removes the stubs that have been created since WireMock was started.
+
+```ruby
+my_server.reset_all
+```
+
+Removes all stubs, file based stubs, and request logs from the WireMock
+server.
+
 ### Using the Rake Tasks
+
 
 
 ## Installation
