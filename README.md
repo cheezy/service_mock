@@ -141,7 +141,8 @@ end
 ### Other capabilities
 
 There are additional methods that provide access to the running WireMock
-server. They are:
+server. If you changed the port during startup then you will need to do
+so here as well.  The methods are:
 
 ```ruby
 my_server.stop
@@ -171,7 +172,39 @@ server.
 
 ### Using the Rake Tasks
 
+There are two rake tasks that are provided to make it easy to start and
+stop the WireMock server when working locally.  You can simply add
+the following to your `Rakefile`:
 
+```ruby
+require 'service_mock'
+require 'service_mock/rake/rake_tasks'
+
+WIREMOCK_VERSION = 'standalone-2.0.10-beta'
+ServiceMock::Rake::StartServerTask.new(:start_server, WIREMOCK_VERSION)
+ServiceMock::Rake::StopServerTask.new(:stop_server, WIREMOCK_VERSION)
+```
+
+Any parameter that can be passed to the `start` method can also be passed
+to the rake task.
+
+```ruby
+ServiceMock::Rake::StartServerTask.new(:start_server, WIREMOCK_VERSION) do |server|
+  server.port = 8081
+  server.record_mappings = true
+  server.root_dir = /path/to/root
+  server.verbose = true
+end
+```
+
+If you set the port in the start task then you will also need to set it
+in the stop task.
+
+```ruby
+ServiceMock::Rake::StopServerTask.new(:stop_server, WIREMOCK_VERSION) do |server|
+  server.port = 8082
+end
+```
 
 ## Installation
 
@@ -192,11 +225,17 @@ Or install it yourself as:
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. 
+Then, run `rake spec` to run the tests. You can also run `bin/console` 
+for an interactive prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/cheezy/service_mock. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at 
+https://github.com/cheezy/service_mock. This project is intended to 
+be a safe, welcoming space for collaboration, and contributors are 
+expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) 
+code of conduct.
 
