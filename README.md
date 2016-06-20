@@ -202,7 +202,7 @@ in the stop task.
 
 ```ruby
 ServiceMock::Rake::StopServerTask.new(:stop_server, WIREMOCK_VERSION) do |server|
-  server.port = 8082
+  server.port = 8081
 end
 ```
 
