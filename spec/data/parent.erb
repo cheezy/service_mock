@@ -1,11 +1,11 @@
 { "request":
   {
-    "url": "/get/erb",
+    "url": "/get/parent",
     "method": "GET"
   },
   "response":
   {
     "status": 200,
-    "body": "<%= render("").remove_newlines.escape_double_quotes %>"
+    "body": "<%= render("spec/data/child.erb").remove_newlines.escape_double_quotes %>"
   }
 }

@@ -85,6 +85,19 @@ describe 'Integration test' do
 
     mock.stop
   end
+
+  it 'can modify the embedded sutbemplate' do
+    mock.start
+    sleep 1
+    filename = File.expand_path('spec/data/parent.erb')
+    mock.stub_with_erb(filename, {})
+    sleep 1
+    uri = URI('http://localhost:8080/get/parent')
+    result =  Net::HTTP.get(uri)
+    expect(result).to eql "This is my message and it contains \"double quotes\""
+
+    mock.stop
+  end
 end
 
 # mock.start do |server|
