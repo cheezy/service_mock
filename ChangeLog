@@ -1,3 +1,7 @@
+=== Release 0.3.1
+* Added remove_newlines method to String as a helper for rendering subtemplates
+* Added escape_double_quotes method to String as a helper for rendering subtemplates
+
 === Release 0.3 / 2016-06-27
 * Removed the config directory from the gem thereby reducing the size
 * Added documentation
