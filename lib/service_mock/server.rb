@@ -121,7 +121,7 @@ module ServiceMock
     # Create a stub using the erb template provided.  The +Hash+ second
     # parameter contains the values to be inserted into the +ERB+.
     #
-    def stub_with_erb(filename, hsh)
+    def stub_with_erb(filename, hsh={})
       yield self if block_given?
       template = File.open(filename, 'rb') {|file| file.read}
       erb_content = ERB.new(template).result(data_binding(hsh))

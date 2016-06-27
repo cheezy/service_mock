@@ -126,6 +126,14 @@ describe ::ServiceMock::Server do
       mock.stub_with_erb('/path/to/file.erb', {first: 'Sam', last: 'Smith'})
     end
 
+    it 'defaults the hash to an empty hash' do
+      file = double
+      expect(File).to receive(:open).with('/path/to/file.erb', 'rb').and_yield(file)
+      expect(file).to receive(:read).and_return('Name: Sam Smith')
+      allow(http).to receive(:post).with('/__admin/mappings/new', 'Name: Sam Smith')
+      mock.stub_with_erb('/path/to/file.erb')
+    end
+
     it 'allows parameters to be provided when setting up the call' do
       expect(Net::HTTP).to receive(:new).with('remote_host', '8080').and_return http
       allow(File).to receive(:open).with('/path/to/file.erb', 'rb').and_return('Name: <%= first %> <%= last %>')
