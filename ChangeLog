@@ -1,5 +1,6 @@
-=== Release 0.3
+=== Release 0.3 / 2016-06-27
 * Removed the config directory from the gem thereby reducing the size
+* Added documentation
 
 === Release 0.2 / 2016-06-16
 * Reorganized the imports to make it easier to utilize the rake tasks
