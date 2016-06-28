@@ -1,4 +1,4 @@
-=== Release 0.3.1
+=== Release 0.3.1 / 2016-06-27
 * Added remove_newlines method to String as a helper for rendering subtemplates
 * Added escape_double_quotes method to String as a helper for rendering subtemplates
 * Added empty Hash as default parameter for stub_with_erb
