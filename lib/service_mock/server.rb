@@ -17,18 +17,18 @@ require 'service_mock/render_subtemplate'
 # When you create your instance of +ServiceMock::Server+ you need to provide
 # some information.  The required piece of data is the version of WireMock
 # you will be using.  If the name of the WireMock jar file you will be using
-# is +wiremock-standalone-2.0.10-beta.jar+ then the version you should provide
-# is +standalone-2.0.10-beta+.  In other words, take off the initial +wiremock-+
+# is +wiremock-standalone-2.1.1-beta.jar+ then the version you should provide
+# is +standalone-2.1.1-beta+.  In other words, take off the initial +wiremock-+
 # and the trailing +.jar+ and this is your version.  The other optional value
 # you can provide is the working directory - the location where the WireMock
 # jar is located.  By default the working directory is set to +config/mocks+.
 # You will initialize the server like this:
 #
 #   # uses default working directory
-#   my_server = ServiceMock::Server.new('standalone-2.0.10-beta')
+#   my_server = ServiceMock::Server.new('standalone-2.1.1-beta')
 #
 #   # or this sets the working directory
-#   my_server = ServiceMock::Server.new('standalone-2.0.10-beta', '/path/to/jar')
+#   my_server = ServiceMock::Server.new('standalone-2.1.1-beta', '/path/to/jar')
 #
 # There are two additional values (inherit_io and wait_for_process) that
 # are defaulted to +false+.  If set to +true+, +inherit_io+ will cause our
