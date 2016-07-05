@@ -6,7 +6,7 @@ require 'service_mock/rake/stop_server_task'
 describe 'Rake Task test' do
 
   SERVER_VERSION = 'standalone-2.1.4-rc3'
-  let(:mock) { ServiceMock::Server.new(SERVER_VERSION) }
+  let(:service_mock) { ServiceMock::Server.new(SERVER_VERSION) }
   let(:start_server) { ::ServiceMock::Rake::StartServerTask }
   let(:stop_server) { ::ServiceMock::Rake::StopServerTask}
 
@@ -15,14 +15,14 @@ describe 'Rake Task test' do
     ::Rake::Task[:start_server].execute
     sleep 1
     expect(rake_task.server.process.alive?).to be true
-    mock.stop
+    service_mock.stop
   end
 
   it 'stops the server process' do
     rake_task = stop_server.new(:stop_server, SERVER_VERSION)
-    mock.start
+    service_mock.start
     sleep 1
-    expect(mock.process.alive?).to be true
+    expect(service_mock.process.alive?).to be true
     ::Rake::Task[:stop_server].execute
     sleep 1
     expect(rake_task.server.process).to be_nil

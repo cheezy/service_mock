@@ -3,26 +3,26 @@ require 'net/http'
 
 describe 'Integration test' do
 
-  # let(:mock) {::ServiceMock::Server.new('1.58-standalone')}
-  let(:mock) {::ServiceMock::Server.new('standalone-2.1.4-rc3')}
+  # let(:service_mock) {::ServiceMock::Server.new('1.58-standalone')}
+  let(:service_mock) {::ServiceMock::Server.new('standalone-2.1.4-rc3')}
 
   it 'starts the server' do
-    mock.start
+    service_mock.start
     sleep 1
-    expect(mock.process.alive?).to be true
-    mock.stop
+    expect(service_mock.process.alive?).to be true
+    service_mock.stop
   end
 
   it 'stops the server' do
-    mock.start
+    service_mock.start
     sleep 1
-    mock.stop
+    service_mock.stop
     sleep 1
-    expect(mock.process.exited?).to be true
+    expect(service_mock.process.exited?).to be true
   end
 
   it 'stubs a message' do
-    mock.start
+    service_mock.start
     sleep 1
     message =
     '
@@ -38,65 +38,65 @@ describe 'Integration test' do
       }
     }
     '
-    mock.stub(message)
+    service_mock.stub(message)
     sleep 1
     uri = URI('http://localhost:8080/get/that')
     result =  Net::HTTP.get(uri)
     expect(result).to eql "There it is\n"
 
-    mock.stop
+    service_mock.stop
   end
 
   it 'uses a file and stubs a message' do
-    mock.start
+    service_mock.start
     sleep 1
     filename = File.expand_path('spec/data/sample.json')
-    mock.stub_with_file(filename)
+    service_mock.stub_with_file(filename)
     sleep 1
     uri = URI('http://localhost:8080/get/sample')
     result =  Net::HTTP.get(uri)
     expect(result).to eql "This is the sample\n"
 
-    mock.stop
+    service_mock.stop
   end
 
   it 'uses an erb file and has to form a message' do
-    mock.start
+    service_mock.start
     sleep 1
     filename = File.expand_path('spec/data/sample.erb')
-    mock.stub_with_erb(filename, first: 'Sam', last: 'Smith')
+    service_mock.stub_with_erb(filename, first: 'Sam', last: 'Smith')
     sleep 1
     uri = URI('http://localhost:8080/get/erb')
     result =  Net::HTTP.get(uri)
     expect(result).to eql '<h1>Hello Sam Smith</h1>'
 
-    mock.stop
+    service_mock.stop
   end
 
   it 'embeds a subtemplate into an erb using render' do
-    mock.start
+    service_mock.start
     sleep 1
     filename = File.expand_path('spec/data/outer.erb')
-    mock.stub_with_erb(filename, first: 'Sam', last: 'Smith')
+    service_mock.stub_with_erb(filename, first: 'Sam', last: 'Smith')
     sleep 1
     uri = URI('http://localhost:8080/get/erb')
     result =  Net::HTTP.get(uri)
     expect(result).to eql '<h1>Hello Sam Smith</h1>'
 
-    mock.stop
+    service_mock.stop
   end
 
   it 'can modify the embedded sutbemplate' do
-    mock.start
+    service_mock.start
     sleep 1
     filename = File.expand_path('spec/data/parent.erb')
-    mock.stub_with_erb(filename, {})
+    service_mock.stub_with_erb(filename, {})
     sleep 1
     uri = URI('http://localhost:8080/get/parent')
     result =  Net::HTTP.get(uri)
     expect(result).to eql "This is my message and it contains \"double quotes\""
 
-    mock.stop
+    service_mock.stop
   end
 end
 
