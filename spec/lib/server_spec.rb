@@ -27,8 +27,6 @@ describe ::ServiceMock::Server do
     end
   end
 
-  require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
-
   describe 'starting the server' do
     let(:child) {double('child').as_null_object}
 
