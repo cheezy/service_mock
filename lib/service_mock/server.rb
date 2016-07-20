@@ -45,7 +45,7 @@ module ServiceMock
     attr_accessor :inherit_io, :wait_for_process, :remote_host
     attr_reader :wiremock_version, :working_directory, :process
 
-    def initialize(wiremock_version, working_directory='config/mocks')
+    def initialize(wiremock_version, working_directory = ::ServiceMock::WORKING_DIRECTORY )
       @wiremock_version = wiremock_version
       @working_directory = working_directory
       self.inherit_io = false
