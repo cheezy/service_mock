@@ -1,5 +1,10 @@
 require 'yaml'
 
+#
+# ServiceMock::StubCreator is a class that can stub a set
+# of services by reading a yaml file.
+#
+
 module ServiceMock
   class StubCreator
 
