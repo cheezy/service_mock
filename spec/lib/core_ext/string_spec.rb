@@ -10,4 +10,9 @@ describe String do
     value = '"foobar"'
     expect(value.escape_double_quotes).to eql '\"foobar\"'
   end
+
+  it 'should remove witespace' do
+    value = "\t\r\n  foobar"
+    expect(value.remove_whitespace).to eql "foobar"
+  end
 end

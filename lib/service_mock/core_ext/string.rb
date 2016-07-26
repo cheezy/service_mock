@@ -7,4 +7,8 @@ class String
   def escape_double_quotes
     self.gsub('"', "\\\"")
   end
+
+  def remove_whitespace
+    self.gsub("\n", "").gsub("\r", "").gsub("\t", "").gsub(" ", "")
+  end
 end
