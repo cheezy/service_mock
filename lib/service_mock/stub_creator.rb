@@ -4,6 +4,40 @@ require 'yaml'
 # ServiceMock::StubCreator is a class that can stub a set
 # of services by reading a yaml file.
 #
+# It is often necessary to stub multiple service calls in order to
+# complete a test.  ServiceMock has created a simple way to do this.
+# It is implemented in a class named `ServiceMock::StubCreator`.
+# This class has a single public method `create_stubs_with` which
+# takes the name of the name of a file that has the data for all
+# of the stubs you wish to create. Also, when you create an instance
+# of the class it requires you to pass an instance of
+# `ServiceMock::Server`.
+#
+# At this time you need to setup everything in a specific directory
+# structure.  The directory it looks for is `config/mocks/stubs`.
+# Inside that directory it looks for two additional directories -
+# `data` and `templates`. The data file needed by the call needs
+# be located in the `data` directory and the `ERB` files (templates)
+# that it references needs to be in the `templates` directory.
+#
+# The structure of the data file drives the stubbing.  Let's start
+# with an example.
+#
+# ```yml
+# service1.erb:
+#   first_name: Mickey
+#   last_name: Mouse
+#
+# service2.erb:
+#   username: mmouse
+#   password: secret
+# ```
+#
+# With the above file the method call will mock to services.  It will first
+# of all read the file `service1.erb` from the `templates` directory and
+# stub it passing the data that is associated.  Next it will read the next
+# template file, etc.
+#
 
 module ServiceMock
   class StubCreator
