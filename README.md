@@ -169,7 +169,10 @@ service2.erb:
   password: secret
 ```
 
-
+With the above file the method call will mock to services.  It will first
+of all read the file `service1.erb` from the `templates` directory and
+stub it passing the data that is associated.  Next it will read the next
+template file, etc.
 
 ### Other capabilities
 
