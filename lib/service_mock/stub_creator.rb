@@ -49,8 +49,9 @@ module ServiceMock
       validate_server
     end
 
-    def create_stubs_with(data_file)
+    def create_stubs_with(data_file, to_merge = {})
       read_data(data_file)
+      merge_data(to_merge) unless to_merge.empty?
       create_stubs
     end
 
@@ -60,6 +61,13 @@ module ServiceMock
       filename = "#{stubs_dir}/data/#{data_file}"
       data_contents = File.open(filename, 'rb') { |file| file.read }
       @data = ::YAML.load(data_contents)
+    end
+
+    def merge_data(to_merge)
+      puts to_merge
+      data.each_key do |key|
+        data[key].merge!(to_merge[key])
+      end
     end
 
     def create_stubs
