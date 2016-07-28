@@ -1,4 +1,4 @@
-=== Release 0.4.1
+=== Release 0.5
 * Added new helper method to remove all whitespace
 * Added ability to merge data when creating a set of stubs with StubCreator
 * Added ability to change default working directory
