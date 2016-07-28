@@ -1,6 +1,7 @@
 === Release 0.4.1
 * Added new helper method to remove all whitespace
 * Added ability to merge data when creating a set of stubs with StubCreator
+* Added ability to change default working directory
 
 === Release 0.4 / 2016-07-20
 * Added new class (StubCreator) to create a set of stubs from a yaml file

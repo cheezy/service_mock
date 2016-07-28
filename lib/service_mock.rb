@@ -24,8 +24,13 @@ require 'service_mock/rake/rake_tasks'
 #
 module ServiceMock
 
-  WORKING_DIRECTORY = 'config/mocks'
+  def self.working_directory
+    @working_directory ||= 'config/mocks'
+  end
 
+  def working_directory=(value)
+    @working_directory = value
+  end
 end
 
 

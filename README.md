@@ -145,9 +145,9 @@ complete a test.  ServiceMock has created a simple way to do this.
 It is implemented in a class named `ServiceMock::StubCreator`.
 This class has a single public method `create_stubs_with` which
 takes the name of the name of a file that has the data for all
-of the stubs you wish to create. Also, when you create an instance
-of the class it requires you to pass an instance of
-`ServiceMock::Server`.
+of the stubs you wish to create and optional data to merge with
+that file. Also, when you create an instance of the class it 
+requires you to pass an instance of `ServiceMock::Server`.
 
 At this time you need to setup everything in a specific directory
 structure.  The directory it looks for is `config/mocks/stubs`.
