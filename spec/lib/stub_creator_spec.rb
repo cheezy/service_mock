@@ -78,8 +78,7 @@ describe ::ServiceMock::StubCreator do
       template_dir = File.expand_path('config/mocks/stubs/templates/')
       allow(file).to receive(:read).and_return(data)
       expect(server).to receive(:stub_with_erb).
-          with("#{template_dir}/service1.xml",
-               {'key1' => 'updated'})
+          with("#{template_dir}/service1.xml", {'key1' => 'updated'})
       stub_creator.create_stubs_with('file', 'service1.xml' => {'key1' => 'updated'})
     end
   end
