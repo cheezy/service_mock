@@ -50,6 +50,7 @@ module ServiceMock
     end
 
     def create_stubs_with(data_file, to_merge = {})
+      return if ::ServiceMock.disable_stubs
       read_data(data_file)
       merge_data(to_merge) unless to_merge.empty?
       create_stubs

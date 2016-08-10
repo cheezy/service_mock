@@ -28,8 +28,16 @@ module ServiceMock
     @working_directory ||= 'config/mocks'
   end
 
-  def working_directory=(value)
+  def self.working_directory=(value)
     @working_directory = value
+  end
+
+  def self.disable_stubs
+    @disable_stubs ||= false
+  end
+
+  def self.disable_stubs=(value)
+    @disable_stubs = value
   end
 end
 

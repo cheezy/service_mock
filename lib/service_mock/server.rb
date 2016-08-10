@@ -104,6 +104,7 @@ module ServiceMock
     # Create a stub based on the value provided.
     #
     def stub(message)
+      return if ::ServiceMock.disable_stubs
       yield self if block_given?
       http.post('/__admin/mappings/new', message)
     end
@@ -112,6 +113,7 @@ module ServiceMock
     # Create a stub using the information in the provided filename.
     #
     def stub_with_file(filename)
+      return if ::ServiceMock.disable_stubs
       yield self if block_given?
       content = File.open(filename, 'rb') {|file| file.read}
       stub(content)
@@ -122,6 +124,7 @@ module ServiceMock
     # parameter contains the values to be inserted into the +ERB+.
     #
     def stub_with_erb(filename, hsh={})
+      return if ::ServiceMock.disable_stubs
       yield self if block_given?
       template = File.open(filename, 'rb') {|file| file.read}
       erb_content = ERB.new(template).result(data_binding(hsh))

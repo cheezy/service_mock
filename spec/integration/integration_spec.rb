@@ -86,7 +86,7 @@ describe 'Integration test' do
     service_mock.stop
   end
 
-  it 'can modify the embedded sutbemplate' do
+  it 'can modify the embedded subtemplate' do
     service_mock.start
     sleep 1
     filename = File.expand_path('spec/data/parent.erb')
@@ -98,13 +98,20 @@ describe 'Integration test' do
 
     service_mock.stop
   end
+
+  it 'does not send a stub when it is disabled' do
+    ::ServiceMock.disable_stubs = true
+    service_mock.start
+    sleep 1
+    filename = File.expand_path('spec/data/parent.erb')
+    service_mock.stub_with_erb(filename, {})
+    sleep 1
+    uri = URI('http://localhost:8080/get/parent')
+    result =  Net::HTTP.get(uri)
+    expect(result).to include "Not Found"
+
+    service_mock.stop
+    ::ServiceMock.disable_stubs = false
+  end
 end
 
-# mock.start do |server|
-#   server.https_port = 8081
-#   server.record_mappings = true
-#   server.proxy_all = 'https://client-test2.schwab.com'
-#   server.verbose = true
-#   server.inherit_io = true
-#   server.wait_for
-# end

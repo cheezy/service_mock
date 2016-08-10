@@ -1,3 +1,6 @@
+=== Release 0.5.1
+* Added ability to turn off all stubbing by setting disable_stubs
+
 === Release 0.5
 * Added new helper method to remove all whitespace
 * Added ability to merge data when creating a set of stubs with StubCreator
