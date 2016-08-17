@@ -1,3 +1,6 @@
+=== Release 0.5.2
+* Fixed defect with merging data where key doesn't exist
+
 === Release 0.5.1
 * Added ability to turn off all stubbing by setting disable_stubs
 

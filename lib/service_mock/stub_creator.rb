@@ -65,8 +65,8 @@ module ServiceMock
     end
 
     def merge_data(to_merge)
-      data.each_key do |key|
-        data[key].merge!(to_merge[key])
+      to_merge.each_key do |key|
+        data[key].merge!(to_merge[key]) if data[key]
       end
     end
 

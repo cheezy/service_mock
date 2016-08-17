@@ -9,6 +9,6 @@ class String
   end
 
   def remove_whitespace
-    self.gsub("\n", "").gsub("\r", "").gsub("\t", "").gsub(" ", "")
+    self.gsub(/\s/, "")
   end
 end
