@@ -42,7 +42,7 @@ module ServiceMock
   class Server
     include CommandLineOptions
 
-    attr_accessor :inherit_io, :wait_for_process, :remote_host
+    attr_accessor :inherit_io, :wait_for_process, :remote_host, :classpath
     attr_reader :wiremock_version, :working_directory, :process
 
     def initialize(wiremock_version, working_directory = ::ServiceMock.working_directory)
@@ -89,7 +89,8 @@ module ServiceMock
     #
     def start
       yield self if block_given?
-      start_process
+      classpath = self.classpath.is_a?(Array) ? self.classpath : []
+      start_process(classpath)
     end
 
     #
@@ -164,16 +165,18 @@ module ServiceMock
       OpenStruct.new(hsh).instance_eval { binding }
     end
 
-    def start_process
-      @process = ChildProcess.build(*(start_command + command_line_options))
+    def start_process(classpath)
+      @process = ChildProcess.build(*(start_command(classpath) + command_line_options))
       @process.cwd = working_directory
       @process.io.inherit! if inherit_io
       @process.start
       @process.wait if wait_for_process
     end
 
-    def start_command
-      ['java', '-jar', "wiremock-#{wiremock_version}.jar"]
+    def start_command(classpath)
+      dependency_jars = classpath + ["wiremock-#{wiremock_version}.jar"]
+      ['java', '-cp', dependency_jars.join(':'),
+        'com.github.tomakehurst.wiremock.standalone.WireMockServerRunner']
     end
 
     def http

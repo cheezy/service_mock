@@ -13,6 +13,18 @@ describe 'Integration test' do
     service_mock.stop
   end
 
+  it 'starts the server with extensions' do
+    service_mock_with_extensions = ::ServiceMock::Server.new('standalone-2.1.7', './spec/support/mocks')
+    service_mock_with_extensions.start do |server|
+      server.port = '8081'
+      server.classpath = ['asm-1.0.2.jar', 'json-smart-2.2.1.jar', 'wiremock-body-transformer-1.1.1.jar']
+      server.extensions = 'com.opentable.extension.BodyTransformer'
+    end
+    sleep 1
+    expect(service_mock_with_extensions.process.alive?).to be true
+    service_mock_with_extensions.stop
+  end
+
   it 'stops the server' do
     service_mock.start
     sleep 1

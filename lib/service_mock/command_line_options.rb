@@ -5,9 +5,9 @@ module ServiceMock
                :match_headers, :proxy_via, :https_keystore, :keystore_password,
                :enable_browser_proxying, :preserve_host_header, :https_truststore,
                :truststore_password, :https_require_client_cert, :no_request_journal,
-               :max_request_journal_entries]
+               :max_request_journal_entries, :extensions]
     NOT_IMPLEMENTED = [:container_threads, :jetty_acceptor_threads, :jetty_accept_queue_size,
-                       :jetty_header_buffer_size, :extensions, :help]
+                       :jetty_header_buffer_size, :help]
 
     attr_accessor *OPTIONS
 
@@ -84,6 +84,10 @@ module ServiceMock
 
     def max_request_journal_entries_command
       ["--max-request-journal-entries #{max_request_journal_entries}"]
+    end
+
+    def extensions_command
+      ['--extensions', extensions]
     end
   end
 end

@@ -35,7 +35,7 @@ describe ::ServiceMock::Server do
     end
 
     it 'starts the mock in the proper directory' do
-      expect(ChildProcess).to receive(:build).with('java', '-jar', 'wiremock-123.jar').and_return(child)
+      expect(ChildProcess).to receive(:build).with('java', '-cp', 'wiremock-123.jar', 'com.github.tomakehurst.wiremock.standalone.WireMockServerRunner').and_return(child)
       expect(child).to receive(:cwd=).with('config/mocks')
       expect(child).to receive(:start)
       service_mock.start
@@ -63,8 +63,16 @@ describe ::ServiceMock::Server do
     end
 
     it 'supplies command-line options' do
-      expect(ChildProcess).to receive(:build).with('java', '-jar', 'wiremock-123.jar', '--port', '123').and_return(child)
+      expect(ChildProcess).to receive(:build).with('java', '-cp', 'wiremock-123.jar', 'com.github.tomakehurst.wiremock.standalone.WireMockServerRunner', '--port', '123').and_return(child)
       service_mock.start {|server| server.port = 123}
+    end
+
+    it 'allows to run with extensions' do
+      expect(ChildProcess).to receive(:build).with('java', '-cp', 'wiremock-body-transformer.jar:wiremock-123.jar', 'com.github.tomakehurst.wiremock.standalone.WireMockServerRunner', '--extensions', 'com.opentable.extension.BodyTransformer').and_return(child)
+      service_mock.start do |server|
+        server.classpath = ['wiremock-body-transformer.jar']
+        server.extensions = 'com.opentable.extension.BodyTransformer'
+      end
     end
   end
 
