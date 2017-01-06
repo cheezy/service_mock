@@ -2,7 +2,7 @@ require 'childprocess'
 require 'net/http'
 require 'erb'
 require 'ostruct'
-require 'service_mock/render_subtemplate'
+require 'service_mock/erb_methods'
 
 #
 # All interaction with the WireMock services is via calls to an instance of
@@ -160,7 +160,7 @@ module ServiceMock
     private
 
     def data_binding(hsh)
-      OpenStruct.include ::ServiceMock::RenderSubTemplate
+      OpenStruct.include ::ServiceMock::ErbMethods
       OpenStruct.new(hsh).instance_eval { binding }
     end
 

@@ -1,11 +1,11 @@
 require 'spec_helper'
-require 'service_mock/render_subtemplate'
+require 'service_mock/erb_methods'
 
-describe ::ServiceMock::RenderSubTemplate do
+describe ::ServiceMock::ErbMethods do
   it 'reads a file and provides the contents to erb' do
     expect(File).to receive(:read).and_return "<%= foo %>"
     object = OpenStruct.new('foo' => 'bar')
-    object.extend ::ServiceMock::RenderSubTemplate
+    object.extend ::ServiceMock::ErbMethods
     output = object.render('/foo/bar')
     expect(output).to eql 'bar'
   end

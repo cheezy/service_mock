@@ -2,7 +2,7 @@ require 'service_mock/core_ext/string'
 require 'service_mock/version'
 require 'service_mock/command_line_options'
 require 'service_mock/server'
-require 'service_mock/render_subtemplate'
+require 'service_mock/erb_methods'
 require 'service_mock/stub_creator'
 require 'service_mock/rake/rake_tasks'
 

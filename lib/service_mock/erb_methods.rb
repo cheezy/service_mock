@@ -1,7 +1,7 @@
 require 'erb'
 
 module ServiceMock
-  module RenderSubTemplate
+  module ErbMethods
 
     def render(path)
       content = File.read(File.expand_path(path))
