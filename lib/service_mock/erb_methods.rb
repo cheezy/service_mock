@@ -10,7 +10,8 @@ module ServiceMock
     end
 
     def value_with_default(value, default)
-      return value if value and self.respond_to? value
+      puts "value is #{value}"
+      return value if value
       default
     end
 
