@@ -9,5 +9,10 @@ module ServiceMock
       template.result(binding)
     end
 
+    def value_with_default(value, default)
+      return value if value and self.respond_to? value
+      default
+    end
+
   end
 end
