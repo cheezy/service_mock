@@ -115,7 +115,7 @@ module ServiceMock
     def stub_with_file(filename)
       return if ::ServiceMock.disable_stubs
       yield self if block_given?
-      content = File.open(filename, 'rb') {|file| file.read}
+      content = File.open(filename, 'rb') { |file| file.read }
       stub(content)
     end
 
@@ -126,7 +126,7 @@ module ServiceMock
     def stub_with_erb(filename, hsh={})
       return if ::ServiceMock.disable_stubs
       yield self if block_given?
-      template = File.open(filename, 'rb') {|file| file.read}
+      template = File.open(filename, 'rb') { |file| file.read }
       erb_content = ERB.new(template).result(data_binding(hsh))
       stub(erb_content)
     end
@@ -181,16 +181,12 @@ module ServiceMock
     end
 
     def admin_host
-      if ENV['WIREMOCK_URL']
-        return ENV['WIREMOCK_URL'].match(/http\:\/\/(.+)\:\d+/)[1]
-      end
+      return ENV['WIREMOCK_URL'].match(/http\:\/\/(.+)\:\d+/)[1] if ENV['WIREMOCK_URL']
       "#{remote_host ? remote_host : 'localhost'}"
     end
 
     def admin_port
-      if ENV['WIREMOCK_URL']
-        self.port = ENV['WIREMOCK_URL'].match(/http\:\/\/.+\:(\d*)/)[1]
-      end
+      self.port = ENV['WIREMOCK_URL'].match(/http\:\/\/.+\:(\d*)/)[1] if ENV['WIREMOCK_URL']
       "#{port ? port.to_s : '8080'}"
     end
 
