@@ -94,6 +94,20 @@ describe ::ServiceMock::Server do
         server.remote_host = 'remote_host'
       end
     end
+
+    it 'overrides the remote host value when WIREMOCK_URL is set' do
+      allow(ENV).to receive(:[]).with('WIREMOCK_URL').and_return 'http://baz.com:8080'
+      expect(Net::HTTP).to receive(:new).with('baz.com', '8080').and_return http
+      allow(http).to receive(:post)
+      service_mock.stub('{}')
+    end
+
+    it 'overrides the remote port when the WIREMOCK_URL value is set' do
+      allow(ENV).to receive(:[]).with('WIREMOCK_URL').and_return 'http://baz.com:1234'
+      expect(Net::HTTP).to receive(:new).with('baz.com', '1234').and_return http
+      allow(http).to receive(:post)
+      service_mock.stub('{}')
+    end
   end
 
   describe 'creating a stub message from a file' do

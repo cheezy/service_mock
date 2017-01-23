@@ -181,10 +181,16 @@ module ServiceMock
     end
 
     def admin_host
+      if ENV['WIREMOCK_URL']
+        return ENV['WIREMOCK_URL'].match(/http\:\/\/(.+)\:\d+/)[1]
+      end
       "#{remote_host ? remote_host : 'localhost'}"
     end
 
     def admin_port
+      if ENV['WIREMOCK_URL']
+        self.port = ENV['WIREMOCK_URL'].match(/http\:\/\/.+\:(\d*)/)[1]
+      end
       "#{port ? port.to_s : '8080'}"
     end
 

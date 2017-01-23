@@ -173,6 +173,8 @@ my_server.stub_with_erb(erbfile, values) do |server|
 end
 ```
 
+Another way to set both the port and remote host is to set an instance
+variable `WIREMOCK_URL`.  It should take the form 'http://hostname:port'.
 
 ### Stubbing multiple services
 
