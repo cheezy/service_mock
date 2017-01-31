@@ -1,4 +1,7 @@
-=== Release 0.7
+=== Release 0.7.1
+* Added ability to specify the stub creator file via Cucumber tags
+
+=== Release 0.7 / 23-Jan-2017
 * Added ability to set remote_host and port via WIREMOCK_URL environment variable
 
 === Release 0.6 / 9-Jan-2017

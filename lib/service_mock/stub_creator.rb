@@ -56,6 +56,11 @@ module ServiceMock
       create_stubs
     end
 
+    def load_for_scenario(scenario)
+      filename = scenario_filename(scenario)
+      create_stubs_with("#{filename.last}.yml")
+    end
+
     private
 
     def read_data(data_file)
@@ -89,6 +94,11 @@ module ServiceMock
       rescue
         raise error_message
       end
+    end
+
+    def scenario_filename(scenario)
+      tags = scenario.send(scenario.respond_to?(:tags) ? :tags : :source_tags)
+      tags.map(&:name).select { |t| t =~ /@servicemock_/ }.map { |t| t.gsub('@servicemock_', '').to_sym }
     end
   end
 end
