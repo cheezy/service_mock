@@ -156,6 +156,81 @@ describe ::ServiceMock::Server do
     end
   end
 
+  describe '#count(request_criteria)' do
+    it 'invokes count with request_criteria' do
+      expect(http).to receive(:post).with('/__admin/requests/count', '{the request criteria}').and_return double(body: '{ "count": 42 }')
+      expect(service_mock.count('{the request criteria}')).to eq(42)
+    end
+
+    it 'allows count on a remote machine' do
+      expect(Net::HTTP).to receive(:new).with('remote_host', '8080').and_return http
+      expect(http).to receive(:post).with('/__admin/requests/count', '{the request criteria}').and_return double(body: '{ "count": 42 }')
+      service_mock.count('{the request criteria}') do |server|
+        server.remote_host = 'remote_host'
+      end
+    end
+
+    it 'overrides the remote host value when WIREMOCK_URL is set' do
+      allow(ENV).to receive(:[]).with('WIREMOCK_URL').and_return 'http://baz.com:8080'
+      expect(Net::HTTP).to receive(:new).with('baz.com', '8080').and_return http
+      allow(http).to receive(:post).and_return double(body: '{ "count": 42 }')
+      service_mock.count('{}')
+    end
+
+    it 'overrides the remote port when the WIREMOCK_URL value is set' do
+      allow(ENV).to receive(:[]).with('WIREMOCK_URL').and_return 'http://baz.com:1234'
+      expect(Net::HTTP).to receive(:new).with('baz.com', '1234').and_return http
+      allow(http).to receive(:post).and_return double(body: '{ "count": 42 }')
+      service_mock.count('{}')
+    end
+  end
+
+  describe '#count_with_file(filename)' do
+    it 'reads the file and invokes count with file content as request criteria and parses JSON response.' do
+      file = double
+      expect(File).to receive(:open).with('/path/to/file', 'rb').and_yield(file)
+      expect(file).to receive(:read).and_return('file contents')
+      expect(http).to receive(:post).with('/__admin/requests/count', 'file contents').and_return double(body: '{ "count": 42 }')
+      expect(service_mock.count_with_file('/path/to/file')).to eq 42
+    end
+
+    it 'allows parameters to be provided when setting up the call' do
+      expect(Net::HTTP).to receive(:new).with('remote_host', '8080').and_return http
+      allow(File).to receive(:open).with('/path/to/file', 'rb').and_return('file contents')
+      allow(http).to receive(:post).with('/__admin/requests/count', 'file contents').and_return double(body: '{ "count": 42 }')
+      service_mock.count_with_file('/path/to/file') do |server|
+        server.remote_host = 'remote_host'
+      end
+    end
+  end
+
+  describe '#count_with_erb(filename, hsh={})' do
+    it 'reads the file and uses the hash to generate the request criteria to invoke count and parses the JSON response.' do
+      file = double
+      expect(File).to receive(:open).with('/path/to/file.erb', 'rb').and_yield(file)
+      expect(file).to receive(:read).and_return('Name: <%= first %> <%= last %>')
+      expect(http).to receive(:post).with('/__admin/requests/count', 'Name: Sam Smith').and_return double(body: '{ "count": 42 }')
+      expect(service_mock.count_with_erb('/path/to/file.erb', {first: 'Sam', last: 'Smith'})).to eq 42
+    end
+
+    it 'defaults the hash to an empty hash' do
+      file = double
+      expect(File).to receive(:open).with('/path/to/file.erb', 'rb').and_yield(file)
+      expect(file).to receive(:read).and_return('Name: Sam Smith')
+      expect(http).to receive(:post).with('/__admin/requests/count', 'Name: Sam Smith').and_return double(body: '{ "count": 42 }')
+      service_mock.count_with_erb('/path/to/file.erb')
+    end
+
+    it 'allows parameters to be provided when setting up the call' do
+      expect(Net::HTTP).to receive(:new).with('remote_host', '8080').and_return http
+      allow(File).to receive(:open).with('/path/to/file.erb', 'rb').and_return('Name: <%= first %> <%= last %>')
+      allow(http).to receive(:post).with('/__admin/requests/count', 'Name: Sam Smith').and_return double(body: '{ "count": 42 }')
+      service_mock.count_with_erb('/path/to/file.erb', {first: 'Sam', last: 'Smith'}) do |server|
+        server.remote_host = 'remote_host'
+      end
+    end
+  end
+
   describe 'saving the stubbed messages' do
     it 'saves the messages' do
       expect(http).to receive(:post).with('/__admin/mappings/save', '')
