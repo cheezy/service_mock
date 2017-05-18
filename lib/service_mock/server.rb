@@ -1,5 +1,6 @@
 require 'childprocess'
 require 'net/http'
+require 'json'
 require 'erb'
 require 'ostruct'
 require 'service_mock/erb_methods'
@@ -129,6 +130,38 @@ module ServiceMock
       template = File.open(filename, 'rb') { |file| file.read }
       erb_content = ERB.new(template).result(data_binding(hsh))
       stub(erb_content)
+    end
+
+    #
+    # Get the count for the request criteria
+    #
+    def count(request_criteria)
+      return if ::ServiceMock.disable_stubs
+      yield self if block_given?
+      return JSON.parse(http.post('/__admin/requests/count', request_criteria).body)['count']
+    end
+
+    #
+    # Get the count for the request criteria in the provided filename.
+    #
+    def count_with_file(filename)
+      return if ::ServiceMock.disable_stubs
+      yield self if block_given?
+      content = File.open(filename, 'rb') { |file| file.read }
+      return count(content)
+    end
+
+    #
+    # Get the count for the request criteria using the erb template
+    # provided.  The +Hash+ second parameter contains the values to be
+    # inserted into the +ERB+.
+    #
+    def count_with_erb(filename, hsh={})
+      return if ::ServiceMock.disable_stubs
+      yield self if block_given?
+      template = File.open(filename, 'rb') { |file| file.read }
+      erb_content = ERB.new(template).result(data_binding(hsh))
+      count(erb_content)
     end
 
     #
