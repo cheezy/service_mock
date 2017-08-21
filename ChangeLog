@@ -1,5 +1,7 @@
 === Release 0.7.1
 * Added ability to specify the stub creator file via Cucumber tags
+* Added count methods to retrieve the count for a specific request - thanks Jarl Friis
+* Fixed issue where rake was required even when rake was not part of bundle - thanks Jarl Friis
 
 === Release 0.7 / 23-Jan-2017
 * Added ability to set remote_host and port via WIREMOCK_URL environment variable
