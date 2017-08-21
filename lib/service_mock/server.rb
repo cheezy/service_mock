@@ -1,8 +1,9 @@
 require 'childprocess'
 require 'net/http'
+require 'json'
 require 'erb'
 require 'ostruct'
-require 'service_mock/render_subtemplate'
+require 'service_mock/erb_methods'
 
 #
 # All interaction with the WireMock services is via calls to an instance of
@@ -116,7 +117,7 @@ module ServiceMock
     def stub_with_file(filename)
       return if ::ServiceMock.disable_stubs
       yield self if block_given?
-      content = File.open(filename, 'rb') {|file| file.read}
+      content = File.open(filename, 'rb') { |file| file.read }
       stub(content)
     end
 
@@ -127,9 +128,41 @@ module ServiceMock
     def stub_with_erb(filename, hsh={})
       return if ::ServiceMock.disable_stubs
       yield self if block_given?
-      template = File.open(filename, 'rb') {|file| file.read}
+      template = File.open(filename, 'rb') { |file| file.read }
       erb_content = ERB.new(template).result(data_binding(hsh))
       stub(erb_content)
+    end
+
+    #
+    # Get the count for the request criteria
+    #
+    def count(request_criteria)
+      return if ::ServiceMock.disable_stubs
+      yield self if block_given?
+      return JSON.parse(http.post('/__admin/requests/count', request_criteria).body)['count']
+    end
+
+    #
+    # Get the count for the request criteria in the provided filename.
+    #
+    def count_with_file(filename)
+      return if ::ServiceMock.disable_stubs
+      yield self if block_given?
+      content = File.open(filename, 'rb') { |file| file.read }
+      return count(content)
+    end
+
+    #
+    # Get the count for the request criteria using the erb template
+    # provided.  The +Hash+ second parameter contains the values to be
+    # inserted into the +ERB+.
+    #
+    def count_with_erb(filename, hsh={})
+      return if ::ServiceMock.disable_stubs
+      yield self if block_given?
+      template = File.open(filename, 'rb') { |file| file.read }
+      erb_content = ERB.new(template).result(data_binding(hsh))
+      count(erb_content)
     end
 
     #
@@ -161,7 +194,7 @@ module ServiceMock
     private
 
     def data_binding(hsh)
-      OpenStruct.include ::ServiceMock::RenderSubTemplate
+      OpenStruct.include ::ServiceMock::ErbMethods
       OpenStruct.new(hsh).instance_eval { binding }
     end
 
@@ -184,10 +217,12 @@ module ServiceMock
     end
 
     def admin_host
+      return ENV['WIREMOCK_URL'].match(/http\:\/\/(.+)\:\d+/)[1] if ENV['WIREMOCK_URL']
       "#{remote_host ? remote_host : 'localhost'}"
     end
 
     def admin_port
+      self.port = ENV['WIREMOCK_URL'].match(/http\:\/\/.+\:(\d*)/)[1] if ENV['WIREMOCK_URL']
       "#{port ? port.to_s : '8080'}"
     end
 

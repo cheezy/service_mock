@@ -1,8 +1,10 @@
 require 'spec_helper'
 
 describe ::ServiceMock::StubCreator do
+
+  let(:service_mock) { ServiceMock::Server.new('standalone-2.5.0') }
+
   it 'should create stubs' do
-    service_mock = ::ServiceMock::Server.new('standalone-2.1.7')
     service_mock.start
     sleep 1
 
@@ -18,7 +20,6 @@ describe ::ServiceMock::StubCreator do
 
   it 'should not create stubs when it is disabled' do
     ::ServiceMock.disable_stubs = true
-    service_mock = ::ServiceMock::Server.new('standalone-2.1.7')
     service_mock.start
     sleep 1
 

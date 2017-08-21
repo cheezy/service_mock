@@ -3,8 +3,7 @@ require 'net/http'
 
 describe 'Integration test' do
 
-  # let(:service_mock) {::ServiceMock::Server.new('1.58-standalone')}
-  let(:service_mock) {::ServiceMock::Server.new('standalone-2.1.7')}
+  let(:service_mock) {::ServiceMock::Server.new('standalone-2.5.0')}
 
   it 'starts the server' do
     service_mock.start
@@ -124,6 +123,32 @@ describe 'Integration test' do
 
     service_mock.stop
     ::ServiceMock.disable_stubs = false
+  end
+
+  it 'uses the default value when value not present' do
+    service_mock.start
+    sleep 1
+    filename = File.expand_path('spec/data/default_value.erb')
+    service_mock.stub_with_erb(filename, {})
+    sleep 1
+    uri = URI('http://localhost:8080/get/erb')
+    result =  Net::HTTP.get(uri)
+    expect(result).to eql '<h1>Hello Fred</h1>'
+
+    service_mock.stop
+  end
+
+  it "overrides the default value with the provided value" do
+    service_mock.start
+    sleep 1
+    filename = File.expand_path('spec/data/default_value.erb')
+    service_mock.stub_with_erb(filename, name: 'Tom')
+    sleep 1
+    uri = URI('http://localhost:8080/get/erb')
+    result =  Net::HTTP.get(uri)
+    expect(result).to eql '<h1>Hello Tom</h1>'
+
+    service_mock.stop
   end
 end
 

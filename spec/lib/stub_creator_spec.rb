@@ -1,5 +1,20 @@
 require 'spec_helper'
 
+class MockScenario
+  attr_accessor :tags
+  def initialize(tags)
+    @tags = tags
+  end
+end
+
+class MockTag
+  attr_reader :name, :line
+  def initialize(name, line)
+    @name = name
+    @line = line
+  end
+end
+
 describe ::ServiceMock::StubCreator do
 
   let(:server) { ::ServiceMock::Server.new('123') }
@@ -83,4 +98,13 @@ describe ::ServiceMock::StubCreator do
     end
   end
 
+  describe "Using tags to specify the mock file" do
+    it 'reads a tag and loads the appropriate file' do
+      data_dir = File.expand_path('config/mocks/stubs/data/')
+      scenario = MockScenario.new([MockTag.new('@tag', 1), MockTag.new('@servicemock_thefile', 1)])
+      expect(File).to receive(:open).with("#{data_dir}/thefile.yml", 'rb').and_yield(file)
+      expect(file).to receive(:read).and_return("from_scenario.xml:\n  key: value\n")
+      stub_creator.load_for_scenario(scenario)
+    end
+  end
 end

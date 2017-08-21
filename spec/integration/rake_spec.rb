@@ -5,7 +5,7 @@ require 'service_mock/rake/stop_server_task'
 
 describe 'Rake Task test' do
 
-  SERVER_VERSION = 'standalone-2.1.7'
+  SERVER_VERSION = 'standalone-2.5.0'
   let(:service_mock) { ServiceMock::Server.new(SERVER_VERSION) }
   let(:start_server) { ::ServiceMock::Rake::StartServerTask }
   let(:stop_server) { ::ServiceMock::Rake::StopServerTask}

@@ -1,28 +1,39 @@
-=== Release 0.5.2
+=== Release 0.7.1
+* Added ability to specify the stub creator file via Cucumber tags
+* Added count methods to retrieve the count for a specific request - thanks Jarl Friis
+* Fixed issue where rake was required even when rake was not part of bundle - thanks Jarl Friis
+
+=== Release 0.7 / 23-Jan-2017
+* Added ability to set remote_host and port via WIREMOCK_URL environment variable
+
+=== Release 0.6 / 9-Jan-2017
+* Added value_with_default method to be used in templates
+
+=== Release 0.5.2 / 17-Aug-2016
 * Fixed defect with merging data where key doesn't exist
 
-=== Release 0.5.1
+=== Release 0.5.1 / 10-Aug-2016
 * Added ability to turn off all stubbing by setting disable_stubs
 
-=== Release 0.5
+=== Release 0.5 / 31-Jul-2016
 * Added new helper method to remove all whitespace
 * Added ability to merge data when creating a set of stubs with StubCreator
 * Added ability to change default working directory
 
-=== Release 0.4 / 2016-07-20
+=== Release 0.4 / 21-Jul-2016
 * Added new class (StubCreator) to create a set of stubs from a yaml file
 
-=== Release 0.3.1 / 2016-06-27
+=== Release 0.3.1 / 28-Jun-2016
 * Added remove_newlines method to String as a helper for rendering subtemplates
 * Added escape_double_quotes method to String as a helper for rendering subtemplates
 * Added empty Hash as default parameter for stub_with_erb
 
-=== Release 0.3 / 2016-06-27
+=== Release 0.3 / 27-Jun-2016
 * Removed the config directory from the gem thereby reducing the size
 * Added documentation
 
-=== Release 0.2 / 2016-06-16
+=== Release 0.2 / 16-Jun-2016
 * Reorganized the imports to make it easier to utilize the rake tasks
 
-=== Release 0.1 / 2016-06-15
+=== Release 0.1 / 15-Jun-2016
 * Initial release with basic functionality
