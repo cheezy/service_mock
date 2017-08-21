@@ -199,10 +199,23 @@ It is often necessary to stub multiple service calls in order to
 complete a test.  ServiceMock has created a simple way to do this.
 It is implemented in a class named `ServiceMock::StubCreator`.
 This class has a single public method `create_stubs_with` which
-takes the name of the name of a file that has the data for all
+takes the name of the file that has the data for all
 of the stubs you wish to create and optional data to merge with
 that file. Also, when you create an instance of the class it
 requires you to pass an instance of `ServiceMock::Server`.
+
+Another way to specify the file to use for creating the stubs is
+to set a tag on the Cucumber Scenario.  Create a tag in the form of
+`@servicemock_FILENAME` where `FILENAME` is the name of the
+file you wish to use.  For example, if you add the tag
+`@servicemock_foo` then the file `foo.yml` will be loaded.  The next
+thing you will need to do is add the following code in a hook:
+
+```ruby
+Before do |scenario|
+  ServiceMock.load_for_scenario(scenario)
+end
+```
 
 At this time you need to setup everything in a specific directory
 structure.  The directory it looks for is `config/mocks/stubs`.
