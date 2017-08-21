@@ -4,7 +4,7 @@ require 'service_mock/command_line_options'
 require 'service_mock/server'
 require 'service_mock/erb_methods'
 require 'service_mock/stub_creator'
-require 'service_mock/rake/rake_tasks'
+require 'service_mock/rake/rake_tasks' if Gem.loaded_specs.has_key? 'rake'
 
 #
 # ServiceMock is a Ruby gem that provides a wrapper over the [WireMock](http://wiremock.org)
