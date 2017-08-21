@@ -65,7 +65,7 @@ You will initialize the server like this:
 ```ruby
 # uses default working directory
 my_server = ServiceMock::Server.new('standalone-2.0.10-beta')
- 
+
 # or this sets the working directory
 my_server = ServiceMock::Server.new('standalone-2.0.10-beta', '/path/to/jar')
 ```
@@ -113,18 +113,35 @@ The values that can be set are:
 | enable_browser_proxy | Run as a browser proxy |
 | no_request_journal | Disable the request journal, which records incoming requests for later verification |
 | max_request_journal_entries | Sets maximum number of entries in request journal.  When this limit is reached oldest entries will be discarded |
+| classpath | Provides list of dependencies jar files to run with the standalone server, they could be extensions and their dependencies and should be kept in the same working directory with the standalone jar file. |
+| extensions | Provides list of wiremock extensions main class to run with the standalone server. |
 
 In addition, as mentioned before, you can set the `inherit_io` and `wait_for_process` options
 to `true` inside of the block.
 
+### Starting the Server with extensions
+
+To start WireMock with extensions, we save the extensions and dependencies jar files in the working directory (default is `config/mocks`) and provide the `classpath` and `extensions` as following:
+
+```ruby
+my_server.start do |server|
+  server.port = 8081
+  server.record_mappings = true
+  server.root_dir = /path/to/root
+  server.verbose = true
+  server.classpath = ['asm-1.0.2.jar', 'json-smart-2.2.1.jar', 'wiremock-body-transformer-1.1.1.jar']
+  server.extensions = 'com.opentable.extension.BodyTransformer'
+end
+```
+
 ### Stubbing service calls
 
-Please read the [WireMock stubbing](http://wiremock.org/stubbing.html) 
+Please read the [WireMock stubbing](http://wiremock.org/stubbing.html)
 documentation so you understand the message structures that are used.
 It is very important that you understand this first. Those details will
 not be covered here.
 
-There are three methods that can be used to stub services.  
+There are three methods that can be used to stub services.
 
 ```ruby
 my_server.stub(string_containing_json_stub)
@@ -136,7 +153,7 @@ my_server.stub_with_erb(erbfile_containing_json_stub, hash_with_values)
 
 The first method is pretty self-explanatory.  You simply pass a string
 that contains the json stub and the server contacts the running server
-process and sets it up.  The second method takes a full path to a file 
+process and sets it up.  The second method takes a full path to a file
 that contains the json stub.
 
 The third method is where things get interesting.  It allows you to provide
@@ -153,8 +170,8 @@ The third method takes the full path to an erb file that contains the
 json stub and a second parameter that is a `Hash` which provides the
 data that is used to fill in the data elements in the template.
 
-If you set the port value when you started the server you will need to 
-do the same via a block when stubbing.  
+If you set the port value when you started the server you will need to
+do the same via a block when stubbing.
 
 ```ruby
 my_server.stub(string_containing_json_stub) do |server|
@@ -178,18 +195,18 @@ variable `WIREMOCK_URL`.  It should take the form 'http://hostname:port'.
 
 ### Stubbing multiple services
 
-It is often necessary to stub multiple service calls in order to 
+It is often necessary to stub multiple service calls in order to
 complete a test.  ServiceMock has created a simple way to do this.
 It is implemented in a class named `ServiceMock::StubCreator`.
 This class has a single public method `create_stubs_with` which
 takes the name of the name of a file that has the data for all
 of the stubs you wish to create and optional data to merge with
-that file. Also, when you create an instance of the class it 
+that file. Also, when you create an instance of the class it
 requires you to pass an instance of `ServiceMock::Server`.
 
 At this time you need to setup everything in a specific directory
 structure.  The directory it looks for is `config/mocks/stubs`.
-Inside that directory it looks for two additional directories - 
+Inside that directory it looks for two additional directories -
 `data` and `templates`. The data file needed by the call needs
 be located in the `data` directory and the `ERB` files (templates)
 that it references needs to be in the `templates` directory.
@@ -201,7 +218,7 @@ with an example.
 service1.erb:
   first_name: Mickey
   last_name: Mouse
-  
+
 service2.erb:
   username: mmouse
   password: secret
@@ -241,11 +258,11 @@ my_server.stop
 ```
 
 Stops the running WireMock server if it is running locally.
- 
+
 ```ruby
 my_server.save
 ```
- 
+
 Writes all of the stubs to disk so they are available the next time
 the server starts.
 
@@ -333,17 +350,17 @@ Or install it yourself as:
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. 
-Then, run `rake spec` to run the tests. You can also run `bin/console` 
+After checking out the repo, run `bin/setup` to install dependencies.
+Then, run `rake spec` to run the tests. You can also run `bin/console`
 for an interactive prompt that will allow you to experiment.
 
 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at 
-https://github.com/cheezy/service_mock. This project is intended to 
-be a safe, welcoming space for collaboration, and contributors are 
-expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) 
+Bug reports and pull requests are welcome on GitHub at
+https://github.com/cheezy/service_mock. This project is intended to
+be a safe, welcoming space for collaboration, and contributors are
+expected to adhere to the [Contributor Covenant](http://contributor-covenant.org)
 code of conduct.
 

@@ -88,4 +88,9 @@ describe ServiceMock::CommandLineOptions do
     clo.max_request_journal_entries = 40
     expect(clo.max_request_journal_entries_command).to eql ['--max-request-journal-entries 40']
   end
+
+  it 'provides an extensions option' do
+    clo.extensions = 'com.foo.FooExt,com.bar.BarExt'
+    expect(clo.extensions_command).to eql ['--extensions', 'com.foo.FooExt,com.bar.BarExt']
+  end
 end
