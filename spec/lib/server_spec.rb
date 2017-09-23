@@ -3,7 +3,7 @@ require 'spec_helper'
 describe ::ServiceMock::Server do
 
   let(:service_mock) {::ServiceMock::Server.new('123')}
-  let(:http)  {double('http').as_null_object}
+  let(:http) {double('http').as_null_object}
 
   before do
     allow(Net::HTTP).to receive(:new).with('localhost', '8080').and_return http
@@ -258,5 +258,40 @@ describe ::ServiceMock::Server do
       expect(http).to receive(:post).with('/__admin/reset', '')
       service_mock.reset_all
     end
+  end
+
+  describe 'when using a proxy' do
+    let(:child) {double('child').as_null_object}
+
+    before do
+      allow(ChildProcess).to receive(:build).and_return(child)
+    end
+
+    it 'should allow the proxy values to be set via block' do
+      service_mock.start do |server|
+        server.proxy_addr = 'proxy_addr'
+        server.proxy_port = 'proxy_port'
+        server.proxy_user = 'proxy_user'
+        server.proxy_pass = 'proxy_pass'
+      end
+
+      expect(service_mock.proxy_addr).to eql 'proxy_addr'
+      expect(service_mock.proxy_port).to eql 'proxy_port'
+      expect(service_mock.proxy_user).to eql 'proxy_user'
+      expect(service_mock.proxy_pass).to eql 'proxy_pass'
+    end
+
+    it 'should use the Proxy when the proxy_addr is set' do
+      expect(Net::HTTP).to receive(:Proxy).with('proxy_addr', 'proxy_port', 'proxy_user', 'proxy_pass').and_return(http)
+      service_mock.start do |server|
+        server.proxy_addr = 'proxy_addr'
+        server.proxy_port = 'proxy_port'
+        server.proxy_user = 'proxy_user'
+        server.proxy_pass = 'proxy_pass'
+      end
+      service_mock.stub('foo')
+    end
+
+
   end
 end

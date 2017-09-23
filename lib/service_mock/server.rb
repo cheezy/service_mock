@@ -214,7 +214,15 @@ module ServiceMock
     end
 
     def http
+      if using_proxy
+        return Net::HTTP.Proxy(proxy_addr, proxy_port,
+                        proxy_user, proxy_pass)
+      end
       Net::HTTP.new(admin_host, admin_port)
+    end
+
+    def using_proxy
+      proxy_addr && proxy_port
     end
 
     def admin_host
