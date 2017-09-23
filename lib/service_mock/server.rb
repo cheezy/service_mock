@@ -45,6 +45,7 @@ module ServiceMock
 
     attr_accessor :inherit_io, :wait_for_process, :remote_host, :classpath
     attr_reader :wiremock_version, :working_directory, :process
+    attr_accessor :proxy_addr, :proxy_port, :proxy_user, :proxy_pass
 
     def initialize(wiremock_version, working_directory = ::ServiceMock.working_directory)
       @wiremock_version = wiremock_version
@@ -139,7 +140,7 @@ module ServiceMock
     def count(request_criteria)
       return if ::ServiceMock.disable_stubs
       yield self if block_given?
-      return JSON.parse(http.post('/__admin/requests/count', request_criteria).body)['count']
+      JSON.parse(http.post('/__admin/requests/count', request_criteria).body)['count']
     end
 
     #
@@ -149,7 +150,7 @@ module ServiceMock
       return if ::ServiceMock.disable_stubs
       yield self if block_given?
       content = File.open(filename, 'rb') { |file| file.read }
-      return count(content)
+      count(content)
     end
 
     #
