@@ -43,7 +43,7 @@ module ServiceMock
   class Server
     include CommandLineOptions
 
-    attr_accessor :inherit_io, :wait_for_process, :remote_host, :classpath
+    attr_accessor :inherit_io, :wait_for_process, :remote_host, :classpath, :use_ssl
     attr_reader :wiremock_version, :working_directory, :process
     attr_accessor :proxy_addr, :proxy_port, :proxy_user, :proxy_pass
 
@@ -52,6 +52,7 @@ module ServiceMock
       @working_directory = working_directory
       self.inherit_io = false
       self.wait_for_process = false
+      self.use_ssl = false
     end
 
     #
@@ -215,10 +216,13 @@ module ServiceMock
 
     def http
       if using_proxy
-        return Net::HTTP.Proxy(proxy_addr, proxy_port,
+        http = Net::HTTP.Proxy(proxy_addr, proxy_port,
                         proxy_user, proxy_pass)
+      else
+        http = Net::HTTP.new(admin_host, admin_port)
       end
-      Net::HTTP.new(admin_host, admin_port)
+      http.use_ssl = use_ssl
+      http
     end
 
     def using_proxy
