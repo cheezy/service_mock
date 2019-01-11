@@ -1,3 +1,6 @@
+=== Release 0.9 / 11-Jan-2019
+* Added support for https connection between gem and wiremock restful server - thanks Aaron Rinn
+
 === Release 0.8 / 23-Sep-2017
 * Added ability to provide proxy settings that are using when communicating with the server
 
