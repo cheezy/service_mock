@@ -3,7 +3,8 @@ require 'net/http'
 
 describe 'Integration test' do
 
-  let(:service_mock) {::ServiceMock::Server.new('standalone-2.5.0')}
+  SERVER_VERSION = 'standalone-2.20.0'
+  let(:service_mock) {::ServiceMock::Server.new(SERVER_VERSION)}
 
   it 'starts the server' do
     service_mock.start
@@ -13,7 +14,7 @@ describe 'Integration test' do
   end
 
   it 'starts the server with extensions' do
-    service_mock_with_extensions = ::ServiceMock::Server.new('standalone-2.1.7', './spec/support/mocks')
+    service_mock_with_extensions = ::ServiceMock::Server.new(SERVER_VERSION, './spec/support/mocks')
     service_mock_with_extensions.start do |server|
       server.port = '8081'
       server.classpath = ['asm-1.0.2.jar', 'json-smart-2.2.1.jar', 'wiremock-body-transformer-1.1.1.jar']
@@ -119,7 +120,7 @@ describe 'Integration test' do
     sleep 1
     uri = URI('http://localhost:8080/get/parent')
     result =  Net::HTTP.get(uri)
-    expect(result).to include "Not Found"
+    expect(result).to include "No response could be served"
 
     service_mock.stop
     ::ServiceMock.disable_stubs = false

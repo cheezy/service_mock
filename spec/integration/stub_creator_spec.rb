@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe ::ServiceMock::StubCreator do
 
-  let(:service_mock) { ServiceMock::Server.new('standalone-2.5.0') }
+  let(:service_mock) { ServiceMock::Server.new('standalone-2.20.0') }
 
   it 'should create stubs' do
     service_mock.start
@@ -28,7 +28,7 @@ describe ::ServiceMock::StubCreator do
     sleep 1
     uri = URI('http://localhost:8080/get/sample')
     result =  Net::HTTP.get(uri)
-    expect(result).to include 'Not Found'
+    expect(result).to include 'No response could be served'
 
     service_mock.stop
     ::ServiceMock.disable_stubs = false
