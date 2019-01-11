@@ -46,12 +46,12 @@ describe ServiceMock::CommandLineOptions do
 
   it 'provides a https_keystore option' do
     clo.https_keystore = '/path/to/keystore'
-    expect(clo.https_keystore_command).to eql ['--https-keystore /path/to/keystore']
+    expect(clo.https_keystore_command).to eql ['--https-keystore', '/path/to/keystore']
   end
 
   it 'provides a keystore_password option' do
     clo.keystore_password = 'passWord'
-    expect(clo.keystore_password_command).to eql ['--keystore-password passWord']
+    expect(clo.keystore_password_command).to eql ['--keystore-password', 'passWord']
   end
 
   it 'provides a enable_borwser_proxying option' do

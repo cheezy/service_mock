@@ -51,11 +51,11 @@ module ServiceMock
     end
 
     def https_keystore_command
-      ["--https-keystore #{https_keystore}"]
+      ['--https-keystore', https_keystore]
     end
 
     def keystore_password_command
-      ["--keystore-password #{keystore_password}"]
+      ['--keystore-password', keystore_password]
     end
 
     def enable_browser_proxying_command
